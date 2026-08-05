@@ -1,0 +1,15 @@
+name = "faucet-doge"
+main = "src/index.js"
+compatibility_date = "2026-07-30"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "doge_rewards"
+database_id = "e7ce610a-aede-4b23-a4db-9e354f67758b"
+
+# Secrets — set with `wrangler secret put NAME`, never write real values here:
+#   FAUCETPAY_API_KEY     (payout API key from faucetpay.io)
+#   TURNSTILE_SECRET_KEY  (Cloudflare Turnstile secret, if CAPTCHA_ENABLED)
+#   ADMIN_USERNAME        (Basic Auth username for the /admin deposit review panel)
+#   ADMIN_PASSWORD        (Basic Auth password for the /admin deposit review panel)
+#   CCPAYMENT_APP_SECRET  (App Secret from ccpayment.com Developer page — NEVER commit this)
