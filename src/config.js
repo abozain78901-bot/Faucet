@@ -112,6 +112,6 @@ export const CONFIG = {
 
   SITE_LIVE: true, 
   // ---- Ad placement (Adsterra network) ----
-  ADS_PER_PAGE: 5,
-  ADS_PER_PTC_PAGE: 10,
+  ADS_PER_PAGE: 3,
+  ADS_PER_PTC_PAGE: 7,
 };
