@@ -122,11 +122,11 @@ export default {
         try { payload = JSON.parse(rawBody); } catch { return new Response('bad json', { status: 400 }); }
 
         // Direct-deposit-to-permanent-address notifications carry: record_id, user_id, coin_symbol, amount, status ...
-        const recordId = String(payload.record_id || payload.recordId || '');
-        const depositUserId = Number(payload.user_id || payload.userId);
+        const recordId = String(payload.recordId || payload.record_id || '');
+        const rawUserId = String(payload.userId || payload.user_id || '');
+        const depositUserId = Number(rawUserId.replace(/^user_/, ''));
         const amount = parseFloat(payload.amount || '0');
         const status = String(payload.status || '');
-
         if (!recordId || !depositUserId || !(amount > 0)) {
           return new Response('success', { status: 200 }); // ack malformed/irrelevant events so CCPayment stops retrying
         }
