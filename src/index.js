@@ -429,8 +429,7 @@ export default {
           return jsonResponse({ ok: true, address: cached.address, memo: cached.memo || '' });
         }
 
-        const notifyUrl = CONFIG.SITE_URL + '/api/webhooks/ccpayment';
-        const result = await getPermanentDepositAddress(env, user.id, notifyUrl);
+        const result = await getPermanentDepositAddress(env, user.id);
         if (!result.ok) {
           return jsonResponse({ ok: false, message: result.message || 'Could not reach CCPayment.' });
         }
