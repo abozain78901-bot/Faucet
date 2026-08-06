@@ -1,9 +1,9 @@
 import { pickAds, renderAdPopup, AD_POPUP_CSS } from '../lib/ads.js';
 
 export function renderPtcView({ adId }) {
-  const ads = pickAds(10);
-  const topAds = ads.slice(0, 5).map((a) => `<div class="ad-box">${a.html}</div>`).join('\n');
-  const bottomAds = ads.slice(5, 10).map((a) => `<div class="ad-box">${a.html}</div>`).join('\n');
+  const ads = pickAds(7);
+  const topAds = ads.slice(0, 4).map((a) => `<div class="ad-box">${a.html}</div>`).join('\n');
+  const bottomAds = ads.slice(3, 4).map((a) => `<div class="ad-box">${a.html}</div>`).join('\n');
   return `
 <!DOCTYPE html>
 <html lang="en">
