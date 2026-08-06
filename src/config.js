@@ -110,7 +110,7 @@ export const CONFIG = {
   CCPAYMENT_CHAIN: 'DOGE', // chain identifier for native Dogecoin deposits
   CCPAYMENT_API_BASE: 'https://admin.ccpayment.com',
 
-  SITE_LIVE: true,
+  SITE_LIVE: false,
   // ---- Ad placement (Adsterra network) ----
   ADS_PER_PAGE: 5,
   ADS_PER_PTC_PAGE: 10,
