@@ -39,6 +39,29 @@ export default {
         return new Response(STYLE_CSS, { headers: { 'Content-Type': 'text/css; charset=utf-8' } });
       }
 
+
+      // ---- Maintenance mode ----
+      if (!CONFIG.SITE_LIVE && !path.startsWith('/admin')) {
+        return new Response(`<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Under Maintenance · ${CONFIG.SITE_NAME}</title>
+<style>
+  body { background:#0b1220; color:#e8ecf5; font-family:system-ui,sans-serif; display:flex; align-items:center; justify-content:center; min-height:100vh; margin:0; text-align:center; padding:20px; }
+  .gear { font-size:64px; display:inline-block; animation:spin 3s linear infinite; }
+  @keyframes spin { from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+  h1 { margin:20px 0 10px; }
+  p { color:#9aa4b8; }
+</style></head>
+<body>
+  <div>
+    <div class="gear">⚙️</div>
+    <h1>We'll be right back</h1>
+    <p>${CONFIG.SITE_NAME} is currently under maintenance. Please check back soon.</p>
+  </div>
+</body></html>`, { status: 503, headers: { 'Content-Type': 'text/html; charset=utf-8', 'Retry-After': '3600' } });
+      }
+      
       // ---- Admin panel (Basic Auth, separate from user sessions) ----
       if (path.startsWith('/admin')) {
         if (!checkBasicAuth(request, env)) return basicAuthChallenge();
