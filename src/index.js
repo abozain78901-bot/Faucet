@@ -138,7 +138,7 @@ export default {
           await env.DB.batch([
             env.DB.prepare(
               'INSERT INTO ccpayment_deposits (user_id, record_id, coin_symbol, amount, status, created_at) VALUES (?, ?, ?, ?, ?, ?)'
-            ).bind(depositUserId, recordId, payload.coin_symbol || CONFIG.FAUCETPAY_CURRENCY, amount, status || 'confirmed', nowUTC()),
+            ).bind(depositUserId, recordId, payload.coinSymbol || CONFIG.FAUCETPAY_CURRENCY, amount, status || 'confirmed', nowUTC()),
             env.DB.prepare(
               'UPDATE users SET balance = balance + ?, total_deposited = total_deposited + ? WHERE id = ?'
             ).bind(amount, amount, depositUserId),
