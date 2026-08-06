@@ -1,7 +1,7 @@
 import { CONFIG } from '../config.js';
 import { layout } from '../lib/render.js';
 
-export function renderLogin({ error } = {}) {
+export function renderLogin({ error, ref } = {}) {
   const body = `
 <h1 class="title">${CONFIG.SITE_NAME}</h1>
 <p class="tagline">${CONFIG.SITE_TAGLINE}</p>
@@ -31,8 +31,9 @@ export function renderLogin({ error } = {}) {
 <div class="card">
     ${error ? `<div class="alert alert-error">${error}</div>` : ''}
     <form method="post" action="/login">
-        <label for="email">FaucetPay Account Email</label>
-        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+    ${ref ? `<input type="hidden" name="ref" value="${ref}">` : ''}
+    <label for="email">FaucetPay Account Email</label>
+    <input type="email" id="email" name="email" placeholder="you@example.com" required>
         <button type="submit" class="btn">Sign In / Register</button>
     </form>
     <p class="muted center" style="margin-top:14px;">No password is required. All rewards are settled to your FaucetPay account in ${CONFIG.FAUCETPAY_CURRENCY}.</p>
