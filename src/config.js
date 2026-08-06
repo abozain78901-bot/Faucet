@@ -108,7 +108,7 @@ export const CONFIG = {
   //   wrangler secret put CCPAYMENT_APP_SECRET
   CCPAYMENT_APP_ID: 'eLWsEn1MoYf5oFgA',
   CCPAYMENT_CHAIN: 'DOGE', // chain identifier for native Dogecoin deposits
-  CCPAYMENT_API_BASE: 'https://admin.ccpayment.com',
+  CCPAYMENT_API_BASE: 'https://ccpayment.com',
 
   SITE_LIVE: true, 
   // ---- Ad placement (Adsterra network) ----
