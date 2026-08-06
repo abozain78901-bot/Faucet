@@ -144,7 +144,7 @@ export default {
             ).bind(amount, amount, depositUserId),
           ]);
           await telegramNotify(
-            `<b>CCPayment deposit credited</b>\n\nUser ID: ${depositUserId}\nAmount: ${fmtDoge(amount)} ${payload.coin_symbol || CONFIG.FAUCETPAY_CURRENCY}\nRecord: ${recordId}`
+            `<b>CCPayment deposit credited</b>\n\nUser ID: ${depositUserId}\nAmount: ${fmtDoge(amount)} ${payload.coinSymbol || CONFIG.FAUCETPAY_CURRENCY}\nRecord: ${recordId}`
           );
         }
 
