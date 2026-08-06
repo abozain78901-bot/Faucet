@@ -80,7 +80,7 @@ export function layout(bodyHtml, opts = {}) {
 <head>
 <meta name="bitmedia-site-verification" content="05e8a7445ae4c4d4b5e6e19a056467de" />
 <meta charset="UTF-8">
-<meta name="viewport" content="width=1200, user-scalable=yes">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title}</title>
 ${favicon}
 <link rel="stylesheet" href="/assets/style.css">
