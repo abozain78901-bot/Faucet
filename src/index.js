@@ -152,10 +152,11 @@ export default {
       }
 
       if (path === '/login' && method === 'GET') {
-        const user = await currentUser(request, env);
-        if (user) return redirect('/dashboard');
-        return htmlResponse(renderLogin({}));
-      }
+  const user = await currentUser(request, env);
+  if (user) return redirect('/dashboard');
+  const ref = url.searchParams.get('ref');
+  return htmlResponse(renderLogin({ ref }));
+}
 
       if (path === '/login' && method === 'POST') {
         const form = await parseFormBody(request);
@@ -163,7 +164,7 @@ export default {
         if (!isValidEmail(email)) {
           return htmlResponse(renderLogin({ error: 'Please enter a valid FaucetPay email address.' }));
         }
-        const refIdParam = url.searchParams.get('ref');
+        const refIdParam = form.ref;
         const refId = refIdParam && /^\d+$/.test(refIdParam) ? Number(refIdParam) : null;
         const user = await getOrCreateUser(env, email, refId, clientIp(request));
         const cookie = await createSession(env, user.id);
