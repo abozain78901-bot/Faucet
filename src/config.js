@@ -64,21 +64,7 @@ export const CONFIG = {
   ],
   WITHDRAWAL_FEE_PERCENT: 0.05000000,
 
-  // ---- Deposit addresses ----
-  // One is shown at random when the user clicks "Deposit". Replace
-  // these four with your real addresses once ready.
-  DEPOSIT_ADDRESSES: [
-    'DNeN3uJsvfp84tn9MKVCTG8jqXHpxNZVJs',
-    'D5sSdxwNcRPsxEdPcNBsEEzLSdo4yj5ymA',
-    'DPwpQqoiswJDMFC11pFCLT35k3wZdtpM13',
-    'DMXmAJPuHAzGwYwhDe4wv9U1aWbJ4rs4uv',
-  ],
 
-  // ---- Telegram notifications for manual deposit review ----
-  // Every submitted deposit (amount, hash, sender wallet) is sent here
-  // so you can review and approve/reject it from the /admin panel.
-  TELEGRAM_BOT_TOKEN: '8678664648:AAGJ1g15x1incbvIyaP-qXmEpTe54U8ZpBk',
-  TELEGRAM_CHAT_ID: '7691139922',
 
   // ---- Anti-bot / captcha (Cloudflare Turnstile) ----
   CAPTCHA_ENABLED: true,
@@ -92,7 +78,7 @@ export const CONFIG = {
 
     // ---- PTC Ads settings ----
   PTC_COUNT: 100,           // عدد إعلانات الـ PTC الكلي
-  PTC_REWARD: 0.00100000,   // مكافأة مشاهدة الإعلان الواحد
+  PTC_REWARD: 0.00050000,   // مكافأة مشاهدة الإعلان الواحد
   PTC_TIMER_SECONDS: 30,    // مدة العداد التنازلي بالثواني
   PTC_COOLDOWN_HOURS: 12,   // منع تكرار النقر على نفس الإعلان إلا بعد 12 ساعة
 
