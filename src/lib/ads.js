@@ -14,6 +14,7 @@ export const AD_SLOTS = [
   { id: 7, html: `<script>atOptions={key:'62dd2833ffddeabe6909f16df83f3d25',format:'iframe',height:60,width:468,params:{}};</script><script src="https://www.highperformanceformat.com/62dd2833ffddeabe6909f16df83f3d25/invoke.js"></script>` },
   { id: 8, html: `<script>atOptions={key:'94912faed86fe327374e129afd2c3ae0',format:'iframe',height:250,width:300,params:{}};</script><script src="https://www.highperformanceformat.com/94912faed86fe327374e129afd2c3ae0/invoke.js"></script>` },
   { id: 9, html: `<script>atOptions={key:'d78b503520e4032d46a6d25786e9ec82',format:'iframe',height:90,width:728,params:{}};</script><script src="https://www.highperformanceformat.com/d78b503520e4032d46a6d25786e9ec82/invoke.js"></script>` },
+  { id: 10, html: `<div id="frame" style="width: 100%;margin: auto;position: relative; z-index: 99998;"><iframe data-aa='2450305' src='//acceptable.a-ads.com/2450305/?size=Adaptive' style='border:0; padding:0; width:70%; height:auto; overflow:hidden;display: block;margin: auto'></iframe></div>` },
 ];
 
 /** Return `count` ad slots. Cycles through the pool if count > AD_SLOTS.length. */
