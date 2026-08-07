@@ -43,6 +43,10 @@ th { background: #17223c; color: var(--gold-light); font-weight: 600; text-trans
 .divider { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 .badge { display: inline-block; background: var(--gold); color: var(--bg); padding: 2px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
 .site-logo { width: 34px; height: 34px; border-radius: 50%; vertical-align: middle; margin-right: 8px; }
+.telegram-float { position: fixed; bottom: 80px; right: 16px; z-index: 9997; display: flex; flex-direction: column; align-items: center; text-decoration: none; }
+.telegram-float .tg-btn { width: 54px; height: 54px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(0,0,0,.4); }
+.telegram-float .tg-btn svg { width: 28px; height: 28px; fill: #fff; }
+.telegram-float .tg-label { margin-top: 4px; color: #22c55e; font-size: 0.7rem; font-weight: 700; text-align: center; text-shadow: 0 1px 3px rgba(0,0,0,.8); max-width: 70px; line-height: 1.2; } 
 ${AD_POPUP_CSS}
 `;
 const NAV_ITEMS = [
@@ -92,6 +96,12 @@ ${bodyHtml}
 ${adsHtml}
 </div>
 ${showNav ? navHtml(opts.activePath) : ''}
+<a href="https://t.me/faucet_dog" target="_blank" rel="noopener" class="telegram-float">
+  <div class="tg-btn">
+    <svg viewBox="0 0 24 24"><path d="M22.05 2.94a1.5 1.5 0 0 0-1.53-.24L1.9 9.9a1.4 1.4 0 0 0 .1 2.64l4.7 1.47 1.82 5.84a1.3 1.3 0 0 0 2.16.5l2.7-2.55 4.62 3.4a1.4 1.4 0 0 0 2.23-.85l3.1-15.4a1.5 1.5 0 0 0-.28-1.01ZM8.6 13.3l9.4-6.16-7.6 7.9-.3 3.1-1.5-4.84Z"/></svg>
+  </div>
+  <span class="tg-label">Join for a bonus</span>
+</a>
 ${popupHtml}
 </body>
 </html>`;
