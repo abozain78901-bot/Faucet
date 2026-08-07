@@ -14,6 +14,7 @@ import { currentUser, createSession, clearSessionCookie, destroySession } from '
 import {
   getOrCreateUser, maybeResetDailyCounters, getLevelInfo, randomClaimAmount,
   playRoll, playBet, verifyCaptcha, faucetpaySend, telegramNotify,
+  telegramSendToChannel, generateRedeemCode,
 } from './lib/functions.js';
 
 import { renderLogin } from './pages/login.js';
@@ -40,7 +41,6 @@ export default {
         return new Response(STYLE_CSS, { headers: { 'Content-Type': 'text/css; charset=utf-8' } });
       }
 
-
       // ---- Maintenance mode ----
       if (!CONFIG.SITE_LIVE && !path.startsWith('/admin')) {
         return new Response(`<!DOCTYPE html>
@@ -62,7 +62,7 @@ export default {
   </div>
 </body></html>`, { status: 503, headers: { 'Content-Type': 'text/html; charset=utf-8', 'Retry-After': '3600' } });
       }
-      
+
       // ---- Admin panel (Basic Auth, separate from user sessions) ----
       if (path.startsWith('/admin')) {
         if (!checkBasicAuth(request, env)) return basicAuthChallenge();
@@ -98,7 +98,8 @@ export default {
             .bind('rejected', nowUTC(), depositId, 'pending').run();
           return redirect('/admin');
         }
-if (path === '/admin/redeem/send' && method === 'POST') {
+
+        if (path === '/admin/redeem/send' && method === 'POST') {
           await postDailyRedeemCode(env);
           return redirect('/admin');
         }
@@ -106,51 +107,6 @@ if (path === '/admin/redeem/send' && method === 'POST') {
         return new Response('Not found', { status: 404 });
       }
 
-      // ---- Redeem code ----
-      if (path === '/redeem' && method === 'GET') {
-        return htmlResponse(renderRedeem());
-      }
-
-      if (path === '/api/redeem' && method === 'POST') {
-        const form = await parseFormBody(request);
-        if (!(await verifyCaptcha(env, form.captcha_token || '', clientIp(request)))) {
-          return jsonResponse({ ok: false, message: 'Captcha verification failed. Please try again.' });
-        }
-        const code = (form.code || '').trim().toUpperCase();
-        if (!code) {
-          return jsonResponse({ ok: false, message: 'Please enter a code.' });
-        }
-
-        const redeemCode = await env.DB.prepare('SELECT * FROM redeem_codes WHERE code = ?').bind(code).first();
-        if (!redeemCode) {
-          return jsonResponse({ ok: false, message: 'Invalid code.' });
-        }
-        if (new Date(redeemCode.expires_at) < new Date()) {
-          return jsonResponse({ ok: false, message: 'This code has expired.' });
-        }
-        if (redeemCode.used_count >= redeemCode.max_uses) {
-          return jsonResponse({ ok: false, message: 'This code has reached its usage limit.' });
-        }
-
-        const alreadyUsed = await env.DB.prepare('SELECT id FROM redeem_claims WHERE code_id = ? AND user_id = ?').bind(redeemCode.id, user.id).first();
-        if (alreadyUsed) {
-          return jsonResponse({ ok: false, message: 'You already redeemed this code.' });
-        }
-
-        const updateResult = await env.DB.prepare('UPDATE redeem_codes SET used_count = used_count + 1 WHERE id = ? AND used_count < max_uses').bind(redeemCode.id).run();
-        if (updateResult.meta.changes === 0) {
-          return jsonResponse({ ok: false, message: 'This code has reached its usage limit.' });
-        }
-
-        await env.DB.batch([
-          env.DB.prepare('INSERT INTO redeem_claims (code_id, user_id, created_at) VALUES (?, ?, ?)').bind(redeemCode.id, user.id, nowUTC()),
-          env.DB.prepare('UPDATE users SET balance = balance + ? WHERE id = ?').bind(redeemCode.reward_amount, user.id),
-        ]);
-
-        return jsonResponse({ ok: true, amount: fmtDoge(redeemCode.reward_amount) });
-      }
-
-      return new Response('Not found', { status: 404 });
       // ---- Public routes ----
       if (path === '/') {
         const user = await currentUser(request, env);
@@ -171,17 +127,15 @@ if (path === '/admin/redeem/send' && method === 'POST') {
         let payload;
         try { payload = JSON.parse(rawBody); } catch { return new Response('bad json', { status: 400 }); }
 
-        // Direct-deposit-to-permanent-address notifications carry: record_id, user_id, coin_symbol, amount, status ...
         const recordId = String(payload.recordId || payload.record_id || '');
         const rawUserId = String(payload.userId || payload.user_id || '');
         const depositUserId = Number(rawUserId.replace(/^user_/, ''));
         const amount = parseFloat(payload.amount || '0');
         const status = String(payload.status || '');
         if (!recordId || !depositUserId || !(amount > 0)) {
-          return new Response('success', { status: 200 }); // ack malformed/irrelevant events so CCPayment stops retrying
+          return new Response('success', { status: 200 });
         }
 
-        // Idempotency: only credit once per record_id.
         const existing = await env.DB.prepare('SELECT id FROM ccpayment_deposits WHERE record_id = ?')
           .bind(recordId).first();
         if (!existing) {
@@ -202,11 +156,11 @@ if (path === '/admin/redeem/send' && method === 'POST') {
       }
 
       if (path === '/login' && method === 'GET') {
-  const user = await currentUser(request, env);
-  if (user) return redirect('/dashboard');
-  const ref = url.searchParams.get('ref');
-  return htmlResponse(renderLogin({ ref }));
-}
+        const user = await currentUser(request, env);
+        if (user) return redirect('/dashboard');
+        const ref = url.searchParams.get('ref');
+        return htmlResponse(renderLogin({ ref }));
+      }
 
       if (path === '/login' && method === 'POST') {
         const form = await parseFormBody(request);
@@ -337,7 +291,7 @@ if (path === '/admin/redeem/send' && method === 'POST') {
         });
       }
 
-            // ---- PTC Ads Routes ----
+      // ---- PTC Ads Routes ----
       if (path === '/ptc' && method === 'GET') {
         const { results } = await env.DB.prepare(
           'SELECT ad_id, last_clicked_at FROM ptc_clicks WHERE user_id = ?'
@@ -356,7 +310,7 @@ if (path === '/admin/redeem/send' && method === 'POST') {
       if (path === '/ptc/view' && method === 'GET') {
         const adIdParam = url.searchParams.get('id');
         const adId = Number(adIdParam);
-        
+
         if (!Number.isInteger(adId) || adId < 1 || adId > CONFIG.PTC_COUNT) {
           return redirect('/ptc');
         }
@@ -399,9 +353,9 @@ if (path === '/admin/redeem/send' && method === 'POST') {
 
         await env.DB.batch([
           env.DB.prepare(
-            `INSERT INTO ptc_clicks (user_id, ad_id, last_clicked_at) 
-             VALUES (?, ?, ?) 
-             ON CONFLICT(user_id, ad_id) 
+            `INSERT INTO ptc_clicks (user_id, ad_id, last_clicked_at)
+             VALUES (?, ?, ?)
+             ON CONFLICT(user_id, ad_id)
              DO UPDATE SET last_clicked_at = ?`
           ).bind(user.id, adId, now, now),
           env.DB.prepare(
@@ -410,6 +364,50 @@ if (path === '/admin/redeem/send' && method === 'POST') {
         ]);
 
         return jsonResponse({ ok: true, amount: fmtDoge(reward) });
+      }
+
+      // ---- Redeem code ----
+      if (path === '/redeem' && method === 'GET') {
+        return htmlResponse(renderRedeem());
+      }
+
+      if (path === '/api/redeem' && method === 'POST') {
+        const form = await parseFormBody(request);
+        if (!(await verifyCaptcha(env, form.captcha_token || '', clientIp(request)))) {
+          return jsonResponse({ ok: false, message: 'Captcha verification failed. Please try again.' });
+        }
+        const code = (form.code || '').trim().toUpperCase();
+        if (!code) {
+          return jsonResponse({ ok: false, message: 'Please enter a code.' });
+        }
+
+        const redeemCode = await env.DB.prepare('SELECT * FROM redeem_codes WHERE code = ?').bind(code).first();
+        if (!redeemCode) {
+          return jsonResponse({ ok: false, message: 'Invalid code.' });
+        }
+        if (new Date(redeemCode.expires_at) < new Date()) {
+          return jsonResponse({ ok: false, message: 'This code has expired.' });
+        }
+        if (redeemCode.used_count >= redeemCode.max_uses) {
+          return jsonResponse({ ok: false, message: 'This code has reached its usage limit.' });
+        }
+
+        const alreadyUsed = await env.DB.prepare('SELECT id FROM redeem_claims WHERE code_id = ? AND user_id = ?').bind(redeemCode.id, user.id).first();
+        if (alreadyUsed) {
+          return jsonResponse({ ok: false, message: 'You already redeemed this code.' });
+        }
+
+        const updateResult = await env.DB.prepare('UPDATE redeem_codes SET used_count = used_count + 1 WHERE id = ? AND used_count < max_uses').bind(redeemCode.id).run();
+        if (updateResult.meta.changes === 0) {
+          return jsonResponse({ ok: false, message: 'This code has reached its usage limit.' });
+        }
+
+        await env.DB.batch([
+          env.DB.prepare('INSERT INTO redeem_claims (code_id, user_id, created_at) VALUES (?, ?, ?)').bind(redeemCode.id, user.id, nowUTC()),
+          env.DB.prepare('UPDATE users SET balance = balance + ? WHERE id = ?').bind(redeemCode.reward_amount, user.id),
+        ]);
+
+        return jsonResponse({ ok: true, amount: fmtDoge(redeemCode.reward_amount) });
       }
 
       // ---- Dashboard ----
@@ -516,4 +514,4 @@ async function postDailyRedeemCode(env) {
   return telegramSendToChannel(
     `🎁 <b>Daily Redeem Code!</b>\n\nCode: <code>${code}</code>\n\nReward: ${CONFIG.REDEEM_REWARD_AMOUNT} ${CONFIG.FAUCETPAY_CURRENCY}\nValid for: first ${CONFIG.REDEEM_MAX_USES} people, ${CONFIG.REDEEM_VALID_HOURS}h\n\nRedeem here: ${CONFIG.SITE_URL}/redeem`
   );
-}
+      }
