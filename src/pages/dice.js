@@ -20,6 +20,16 @@ export function renderDice({ user, secondsLeft, canRoll, underDailyLimit }) {
 <script src="https://pl27826792.effectivecpmnetwork.com/64/a9/f2/64a9f2bcf58f9cc6510ef86dfd4b9dc2.js"></script>
 
 
+<script>
+  atOptions = {
+    'key' : '2069ca0b4b7f43c398a4b51f7559c006',
+    'format' : 'iframe',
+    'height' : 600,
+    'width' : 160,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/2069ca0b4b7f43c398a4b51f7559c006/invoke.js"></script>
 
 
 
