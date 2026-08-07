@@ -47,6 +47,98 @@ th { background: #17223c; color: var(--gold-light); font-weight: 600; text-trans
 .telegram-float .tg-btn { width: 54px; height: 54px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(0,0,0,.4); }
 .telegram-float .tg-btn svg { width: 28px; height: 28px; fill: #fff; }
 .telegram-float .tg-label { margin-top: 4px; color: #22c55e; font-size: 0.7rem; font-weight: 700; text-align: center; text-shadow: 0 1px 3px rgba(0,0,0,.8); max-width: 70px; line-height: 1.2; } 
+
+
+/* زر الثلاث خطوط */
+.menu-toggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1001;
+  background: #e8f5e9; /* أخضر باهت جداً */
+  border: 1px solid #c8e6c9;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background-color: #2e7d32; /* لون الخطوط أخضر داكن وواضح */
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+/* القائمة الجانبية على اليسار */
+.side-nav {
+  position: fixed;
+  top: 0;
+  left: -280px; /* مخفية بالكامل خارج الشاشة من اليسار */
+  width: 260px;
+  height: 100vh;
+  background-color: #ffffff;
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.05);
+  z-index: 1000;
+  transition: left 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+/* عند فتح القائمة */
+.side-nav.open {
+  left: 0;
+}
+
+/* عنوان القائمة */
+.nav-header {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #2e7d32;
+  margin-bottom: 25px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e8f5e9;
+}
+
+/* حاوية الروابط */
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* تصميم الأزرار (أخضر باهت) */
+.side-nav .nav-btn {
+  display: block;
+  padding: 12px 16px;
+  background-color: #e8f5e9; /* أخضر باهت */
+  color: #1b5e20; /* نص أخضر غامق لضمان وضوح القراءة */
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+/* تأثير عند المرور بالفأرة أو الضغط */
+.side-nav .nav-btn:hover {
+  background-color: #c8e6c9; /* أخضر باهت أغمق قليلاً عند التحويم */
+  transform: translateX(4px);
+}
+
+/* زر الصفحة الحالية (Active) */
+.side-nav .nav-btn.active {
+  background-color: #a5d6a7;
+  font-weight: bold;
+  border-left: 4px solid #2e7d32;
+}
+
+
+
 ${AD_POPUP_CSS}
 `;
 const NAV_ITEMS = [
