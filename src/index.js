@@ -512,6 +512,7 @@ async function postDailyRedeemCode(env) {
   ).bind(code, CONFIG.REDEEM_REWARD_AMOUNT, CONFIG.REDEEM_MAX_USES, expiresAt.toISOString(), now.toISOString()).run();
 
   return telegramSendToChannel(
+    env, 
     `🎁 <b>Daily Redeem Code!</b>\n\nCode: <code>${code}</code>\n\nReward: ${CONFIG.REDEEM_REWARD_AMOUNT} ${CONFIG.FAUCETPAY_CURRENCY}\nValid for: first ${CONFIG.REDEEM_MAX_USES} people, ${CONFIG.REDEEM_VALID_HOURS}h\n\nRedeem here: ${CONFIG.SITE_URL}/redeem`
   );
       }
