@@ -3,65 +3,101 @@ import { renderAdsSection, renderAdPopup, AD_POPUP_CSS } from './ads.js';
 
 export const STYLE_CSS = `
 :root {
+  /* الافتراضي هو الوضع الغامق (Dark Mode) */
   --bg-color: #0f172a;
-  --text-color: #333333;
-}
-
-body.dark-mode {
-  --bg-color: #0f172a;
+  --panel-color: #0d1424;
   --text-color: #ffffff;
+  --muted-color: #a0a0a0;
+  --border-color: #1e293b;
+  --gold-color: #fbbf24;
+  --gold-light: #fcd34d;
 }
 
-body {
-  background-color: var(--bg-color);
-  color: var(--text-color);
+/* عند إلغاء الوضع الغامق (أي الوضع الفاتح) تتحول المتغيرات بالكامل */
+body:not(.dark-mode) {
+  --bg-color: #f8fafc;
+  --panel-color: #ffffff;
+  --text-color: #1e293b;
+  --muted-color: #64748b;
+  --border-color: #e2e8f0;
+  --gold-color: #d97706;
+  --gold-light: #b45309;
+}
+
+* { box-sizing: border-box; }
+
+body { 
+  background-color: var(--bg-color); 
+  color: var(--text-color); 
+  font-family: Georgia, 'Times New Roman', serif; 
+  margin: 0; 
+  padding-bottom: 90px; 
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.side-nav {
-  background-color: var(--bg-color);
-}
- 
-* { box-sizing: border-box; }
-body { background: var(--bg); color: var(--text); font-family: Georgia, 'Times New Roman', serif; margin: 0; padding-bottom: 90px; }
 .wrap { max-width: 480px; margin: 0 auto; padding: 24px 18px; }
-h1, h2, h3 { margin: 0 0 8px; font-family: Georgia, serif; font-weight: 600; }
+
+h1, h2, h3 { margin: 0 0 8px; font-family: Georgia, serif; font-weight: 600; color: var(--text-color); }
 .title { text-align: center; font-size: 1.6rem; font-weight: 700; color: var(--gold-light); letter-spacing: 0.5px; margin-bottom: 4px; }
-.tagline { text-align: center; color: var(--muted); margin-bottom: 24px; font-size: 0.9rem; font-style: italic; }
-.card { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 18px; margin-bottom: 18px; }
+.tagline { text-align: center; color: var(--muted-color); margin-bottom: 24px; font-size: 0.9rem; font-style: italic; }
+
+.card, .stat-box, .referral-box, .referral-link, .address-box { 
+  background-color: var(--panel-color) !important; 
+  border: 1px solid var(--border-color) !important; 
+  border-radius: 6px; 
+  padding: 18px; 
+  margin-bottom: 18px; 
+  color: var(--text-color) !important;
+}
+
 .stat-row { display: flex; gap: 12px; }
-.stat-box { flex: 1; background: #0d1424; border: 1px solid var(--border); border-radius: 4px; padding: 14px; text-align: center; }
+.stat-box { flex: 1; text-align: center; padding: 14px; }
 .stat-box .value { font-size: 1.2rem; font-weight: 700; color: var(--gold-light); }
-.stat-box .label { color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
-input[type=text], input[type=email], input[type=number] { width: 100%; padding: 13px; border-radius: 4px; border: 1px solid var(--border); background: #0d1424; color: var(--text); font-size: 1rem; margin-bottom: 12px; font-family: inherit; }
-label { display: block; font-size: 0.85rem; color: var(--muted); margin-bottom: 6px; }
-.btn { display: block; width: 100%; padding: 14px; border: 1px solid var(--gold); border-radius: 4px; font-weight: 700; font-size: 0.95rem; cursor: pointer; color: var(--bg); text-align: center; text-decoration: none; background: var(--gold); letter-spacing: 0.3px; }
+.stat-box .label { color: var(--muted-color); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+input[type=text], input[type=email], input[type=number] { 
+  width: 100%; 
+  padding: 13px; 
+  border-radius: 4px; 
+  border: 1px solid var(--border-color); 
+  background: var(--panel-color); 
+  color: var(--text-color); 
+  font-size: 1rem; 
+  margin-bottom: 12px; 
+  font-family: inherit; 
+}
+
+label { display: block; font-size: 0.85rem; color: var(--muted-color); margin-bottom: 6px; }
+
+.btn { display: block; width: 100%; padding: 14px; border: 1px solid var(--gold-color); border-radius: 4px; font-weight: 700; font-size: 0.95rem; cursor: pointer; color: var(--bg-color); text-align: center; text-decoration: none; background: var(--gold-color); letter-spacing: 0.3px; }
 .btn-outline { background: transparent; color: var(--gold-light); }
 .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.countdown { text-align: center; color: var(--blue); font-weight: 700; margin: 12px 0; font-size: 0.95rem; }
-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 0.9rem; }
-th, td { padding: 9px; text-align: center; border-bottom: 1px solid var(--border); }
-th { background: #17223c; color: var(--gold-light); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.5px; }
-.roll-display { text-align: center; font-size: 2.2rem; font-weight: 700; letter-spacing: 4px; background: #0d1424; border: 1px solid var(--gold); border-radius: 4px; padding: 20px; color: var(--gold-light); margin-bottom: 16px; }
+
+.countdown { text-align: center; font-weight: 700; margin: 12px 0; font-size: 0.95rem; }
+
+table { width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 0.9rem; color: var(--text-color); }
+th, td { padding: 9px; text-align: center; border-bottom: 1px solid var(--border-color); }
+th { background: var(--panel-color); color: var(--gold-light); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.5px; }
+
+.roll-display { text-align: center; font-size: 2.2rem; font-weight: 700; letter-spacing: 4px; background: var(--panel-color); border: 1px solid var(--gold-color); border-radius: 4px; padding: 20px; color: var(--gold-light); margin-bottom: 16px; }
+
 .alert { padding: 12px; border-radius: 4px; margin-bottom: 12px; font-size: 0.88rem; border: 1px solid; }
-.alert-success { background: rgba(63,174,106,.12); border-color: var(--green); color: var(--green); }
-.alert-error { background: rgba(193,75,75,.12); border-color: var(--red); color: #e08585; }
-.alert-warn { background: rgba(201,162,75,.12); border-color: var(--gold); color: var(--gold-light); }
-.referral-box { background: #0d1424; border: 1px solid var(--border); border-radius: 6px; padding: 18px; }
-.referral-link, .address-box { background: #0d1424; border: 1px solid var(--border); border-radius: 4px; padding: 10px; word-break: break-all; font-size: 0.82rem; display: flex; justify-content: space-between; align-items: center; gap: 8px; font-family: monospace; }
-.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--panel); border-top: 1px solid var(--border); display: flex; max-width: 480px; margin: 0 auto; }
-.bottom-nav a { flex: 1; text-align: center; padding: 11px 0; color: var(--muted); text-decoration: none; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.3px; }
-.bottom-nav a.active { color: var(--gold-light); }
-.muted { color: var(--muted); font-size: 0.83rem; }
+.alert-success { background: rgba(63,174,106,.12); border-color: #3fae6a; color: #3fae6a; }
+.alert-error { background: rgba(193,75,75,.12); border-color: #c14b4b; color: #e08585; }
+.alert-warn { background: rgba(201,162,75,.12); border-color: var(--gold-color); color: var(--gold-light); }
+
+.referral-link, .address-box { word-break: break-all; font-size: 0.82rem; display: flex; justify-content: space-between; align-items: center; gap: 8px; font-family: monospace; }
+
+.muted { color: var(--muted-color); font-size: 0.83rem; }
 .center { text-align: center; }
-.divider { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
-.badge { display: inline-block; background: var(--gold); color: var(--bg); padding: 2px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+.divider { border: none; border-top: 1px solid var(--border-color); margin: 16px 0; }
+.badge { display: inline-block; background: var(--gold-color); color: var(--bg-color); padding: 2px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
 .site-logo { width: 34px; height: 34px; border-radius: 50%; vertical-align: middle; margin-right: 8px; }
+
 .telegram-float { position: fixed; bottom: 80px; right: 16px; z-index: 9997; display: flex; flex-direction: column; align-items: center; text-decoration: none; }
 .telegram-float .tg-btn { width: 54px; height: 54px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(0,0,0,.4); }
 .telegram-float .tg-btn svg { width: 28px; height: 28px; fill: #fff; }
 .telegram-float .tg-label { margin-top: 4px; color: #22c55e; font-size: 0.7rem; font-weight: 700; text-align: center; text-shadow: 0 1px 3px rgba(0,0,0,.8); max-width: 70px; line-height: 1.2; } 
-
 
 /* زر الثلاث خطوط */
 .menu-toggle {
@@ -69,8 +105,8 @@ th { background: #17223c; color: var(--gold-light); font-weight: 600; text-trans
   top: 20px;
   left: 20px;
   z-index: 1001;
-  background: #e8f5e9; /* أخضر باهت جداً */
-  border: 1px solid #c8e6c9;
+  background: var(--panel-color);
+  border: 1px solid var(--border-color);
   padding: 10px;
   cursor: pointer;
   border-radius: 8px;
@@ -83,7 +119,7 @@ th { background: #17223c; color: var(--gold-light); font-weight: 600; text-trans
   display: block;
   width: 25px;
   height: 3px;
-  background-color: #2e7d32; /* لون الخطوط أخضر داكن وواضح */
+  background-color: var(--text-color);
   border-radius: 2px;
   transition: 0.3s;
 }
@@ -92,11 +128,12 @@ th { background: #17223c; color: var(--gold-light); font-weight: 600; text-trans
 .side-nav {
   position: fixed;
   top: 0;
-  left: -280px; /* مخفية بالكامل خارج الشاشة من اليسار */
+  left: -280px;
   width: 260px;
   height: 100vh;
-  background-color: #0f172a;
-  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.05);
+  background-color: var(--panel-color);
+  border-right: 1px solid var(--border-color);
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   transition: left 0.3s ease-in-out;
   display: flex;
@@ -104,57 +141,54 @@ th { background: #17223c; color: var(--gold-light); font-weight: 600; text-trans
   padding: 20px;
 }
 
-/* عند فتح القائمة */
 .side-nav.open {
   left: 0;
 }
 
-/* عنوان القائمة */
 .nav-header {
   font-size: 1.2rem;
   font-weight: bold;
-  color: #2e7d32;
+  color: var(--text-color);
   margin-bottom: 25px;
   padding-bottom: 10px;
-  border-bottom: 2px solid #e8f5e9;
+  border-bottom: 2px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* حاوية الروابط */
 .nav-links {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-/* تصميم الأزرار (أخضر باهت) */
 .side-nav .nav-btn {
   display: block;
   padding: 12px 16px;
-  background-color: #e8f5e9; /* أخضر باهت */
-  color: #1b5e20; /* نص أخضر غامق لضمان وضوح القراءة */
+  background-color: var(--bg-color);
+  color: var(--text-color);
   text-decoration: none;
   border-radius: 8px;
   font-weight: 500;
+  border: 1px solid var(--border-color);
   transition: background-color 0.2s, transform 0.2s;
 }
 
-/* تأثير عند المرور بالفأرة أو الضغط */
 .side-nav .nav-btn:hover {
-  background-color: #c8e6c9; /* أخضر باهت أغمق قليلاً عند التحويم */
+  background-color: var(--border-color);
   transform: translateX(4px);
 }
 
-/* زر الصفحة الحالية (Active) */
 .side-nav .nav-btn.active {
-  background-color: #a5d6a7;
+  background-color: var(--border-color);
   font-weight: bold;
-  border-left: 4px solid #2e7d32;
+  border-left: 4px solid var(--gold-color);
 }
-
-
 
 ${AD_POPUP_CSS}
 `;
+
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'Dashboard 🏠' },
   { href: '/faucet', label: 'Faucet 💧' },
@@ -164,7 +198,6 @@ const NAV_ITEMS = [
   { href: '/redeem', label: 'Redeem 🎁' },
   { href: '/deposit', label: 'Deposit 💳' },
 ];
-
 
 function navHtml(activePath) {
   const links = NAV_ITEMS.map(
@@ -181,7 +214,7 @@ function navHtml(activePath) {
 
     <!-- القائمة الجانبية على اليسار -->
     <nav class="side-nav" id="sideNav">
-      <div class="nav-header" style="display: flex; justify-content: space-between; align-items: center;">
+      <div class="nav-header">
         <span>Menu</span>
         <!-- زر الشمس/القمر -->
         <button id="themeToggleBtn" onclick="toggleTheme()" style="background: none; border: none; font-size: 1.2rem; cursor: pointer;">🌙</button>
@@ -191,12 +224,28 @@ function navHtml(activePath) {
       </div>
     </nav>
 
-    <!-- جافاسكريبت للتحكم بالقائمة والوضع الليلي -->
+    <!-- جافاسكريبت للتحكم بالقائمة والوضع الليلي وتوفير الدالة في النطاق العام -->
     <script>
       function toggleSidebar() {
         const nav = document.getElementById('sideNav');
         nav.classList.toggle('open');
       }
+
+      // تعريف دالة تبديل الثيم بشكل مضمون في النطاق العام لتجنب مشاكل الـ onclick
+      window.toggleTheme = function() {
+        const body = document.body;
+        const btn = document.getElementById('themeToggleBtn');
+        
+        body.classList.toggle('dark-mode');
+        
+        if (body.classList.contains('dark-mode')) {
+          if (btn) btn.innerHTML = '☀️';
+          localStorage.setItem('theme', 'dark');
+        } else {
+          if (btn) btn.innerHTML = '🌙';
+          localStorage.setItem('theme', 'light');
+        }
+      };
 
       // تطبيق الوضع المحفوظ عند تحميل الصفحة
       window.addEventListener('DOMContentLoaded', () => {
@@ -213,22 +262,6 @@ function navHtml(activePath) {
     </script>
   `;
 }
-
-function toggleTheme() {
-  const body = document.body;
-  const btn = document.getElementById('themeToggleBtn');
-  
-  body.classList.toggle('dark-mode');
-  
-  if (body.classList.contains('dark-mode')) {
-    btn.innerHTML = '☀️';
-    localStorage.setItem('theme', 'dark');
-  } else {
-    btn.innerHTML = '🌙';
-    localStorage.setItem('theme', 'light');
-  }
-}
-
 
 export function layout(bodyHtml, opts = {}) {
   const title = opts.title || CONFIG.SITE_NAME;
