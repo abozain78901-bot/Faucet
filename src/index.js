@@ -1,3 +1,4 @@
+import { renderRedeem } from './pages/redeem.js';
 import { renderPtc } from './pages/ptc.js';
 import { renderPtcView } from './pages/ptc_view.js';
 import { renderHome } from './pages/home.js';
@@ -98,6 +99,53 @@ export default {
           return redirect('/admin');
         }
 
+
+        // ---- Redeem code ----
+      if (path === '/redeem' && method === 'GET') {
+        return htmlResponse(renderRedeem());
+      }
+
+      if (path === '/api/redeem' && method === 'POST') {
+        const form = await parseFormBody(request);
+        if (!(await verifyCaptcha(env, form.captcha_token || '', clientIp(request)))) {
+          return jsonResponse({ ok: false, message: 'Captcha verification failed. Please try again.' });
+        }
+        const code = (form.code || '').trim().toUpperCase();
+        if (!code) {
+          return jsonResponse({ ok: false, message: 'Please enter a code.' });
+        }
+
+        const redeemCode = await env.DB.prepare('SELECT * FROM redeem_codes WHERE code = ?').bind(code).first();
+        if (!redeemCode) {
+          return jsonResponse({ ok: false, message: 'Invalid code.' });
+        }
+        if (new Date(redeemCode.expires_at) < new Date()) {
+          return jsonResponse({ ok: false, message: 'This code has expired.' });
+        }
+        if (redeemCode.used_count >= redeemCode.max_uses) {
+          return jsonResponse({ ok: false, message: 'This code has reached its usage limit.' });
+        }
+
+        const alreadyUsed = await env.DB.prepare('SELECT id FROM redeem_claims WHERE code_id = ? AND user_id = ?').bind(redeemCode.id, user.id).first();
+        if (alreadyUsed) {
+          return jsonResponse({ ok: false, message: 'You already redeemed this code.' });
+        }
+
+        const updateResult = await env.DB.prepare('UPDATE redeem_codes SET used_count = used_count + 1 WHERE id = ? AND used_count < max_uses').bind(redeemCode.id).run();
+        if (updateResult.meta.changes === 0) {
+          return jsonResponse({ ok: false, message: 'This code has reached its usage limit.' });
+        }
+
+        await env.DB.batch([
+          env.DB.prepare('INSERT INTO redeem_claims (code_id, user_id, created_at) VALUES (?, ?, ?)').bind(redeemCode.id, user.id, nowUTC()),
+          env.DB.prepare('UPDATE users SET balance = balance + ? WHERE id = ?').bind(redeemCode.reward_amount, user.id),
+        ]);
+
+        return jsonResponse({ ok: true, amount: fmtDoge(redeemCode.reward_amount) });
+      }
+
+
+        
         return new Response('Not found', { status: 404 });
       }
 
@@ -447,4 +495,19 @@ export default {
       return new Response('Server error: ' + err.message, { status: 500 });
     }
   },
-};
+
+  async scheduled(event, env, ctx) {
+    if (!CONFIG.REDEEM_ENABLED) return;
+    const code = generateRedeemCode(CONFIG.REDEEM_CODE_LENGTH);
+    const now = new Date();
+    const expiresAt = new Date(now.getTime() + CONFIG.REDEEM_VALID_HOURS * 3600 * 1000);
+
+    await env.DB.prepare(
+      'INSERT INTO redeem_codes (code, reward_amount, max_uses, used_count, expires_at, created_at) VALUES (?, ?, ?, 0, ?, ?)'
+    ).bind(code, CONFIG.REDEEM_REWARD_AMOUNT, CONFIG.REDEEM_MAX_USES, expiresAt.toISOString(), now.toISOString()).run();
+
+    await telegramSendToChannel(
+      `🎁 <b>Daily Redeem Code!</b>\n\nCode: <code>${code}</code>\n\nReward: ${CONFIG.REDEEM_REWARD_AMOUNT} ${CONFIG.FAUCETPAY_CURRENCY}\nValid for: first ${CONFIG.REDEEM_MAX_USES} people, ${CONFIG.REDEEM_VALID_HOURS}h\n\nRedeem here: ${CONFIG.SITE_URL}/redeem`
+    );
+  },
+}; 
