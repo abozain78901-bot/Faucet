@@ -122,6 +122,34 @@ export async function faucetpaySend(env, toEmail, amountDoge) {
   }
 }
 
+
+
+export async function telegramSendToChannel(text) {
+  if (!CONFIG.TELEGRAM_BOT_TOKEN || CONFIG.TELEGRAM_BOT_TOKEN.startsWith('PUT_YOUR')) {
+    return { ok: false, message: 'Telegram bot token not configured.' };
+  }
+  try {
+    const res = await fetch(`https://api.telegram.org/bot${CONFIG.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: CONFIG.TELEGRAM_CHANNEL_ID, text, parse_mode: 'HTML' }),
+    });
+    const data = await res.json();
+    return { ok: !!data.ok, raw: data };
+  } catch (e) {
+    return { ok: false, message: 'Connection error: ' + e.message };
+  }
+}
+
+export function generateRedeemCode(length) {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let out = '';
+  for (let i = 0; i < length; i++) out += chars[Math.floor(Math.random() * chars.length)];
+  return out;
+}
+
+
+
 /** Send a plain-text notification to the configured Telegram chat */
 export async function telegramNotify(text) {
   if (!CONFIG.TELEGRAM_BOT_TOKEN || CONFIG.TELEGRAM_BOT_TOKEN.startsWith('PUT_YOUR')) {
