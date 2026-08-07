@@ -77,7 +77,10 @@ export function layout(bodyHtml, opts = {}) {
     : '';
 
   const adCount = opts.adCount ?? (CONFIG.ADS_ENABLED ? CONFIG.ADS_PER_PAGE : 0);
-  const adsHtml = CONFIG.ADS_ENABLED ? renderAdsSection(adCount) : '';
+  const topCount = Math.floor(adCount / 2);
+  const bottomCount = adCount - topCount;
+  const adsTopHtml = CONFIG.ADS_ENABLED ? renderAdsSection(topCount, 'Sponsored') : '';
+  const adsBottomHtml = CONFIG.ADS_ENABLED ? renderAdsSection(bottomCount, 'Sponsored') : '';
   const popupHtml = (CONFIG.ADS_ENABLED && opts.showPopup !== false) ? renderAdPopup() : '';
 
   return `<!DOCTYPE html>
@@ -93,8 +96,9 @@ ${turnstileScript}
 </head>
 <body>
 <div class="wrap">
+${adsTopHtml}
 ${bodyHtml}
-${adsHtml}
+${adsBottomHtml}
 </div>
 ${showNav ? navHtml(opts.activePath) : ''}
 <a href="https://t.me/faucet_dog" target="_blank" rel="noopener" class="telegram-float">
