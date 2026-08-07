@@ -81,7 +81,7 @@ th { background: #17223c; color: var(--gold-light); font-weight: 600; text-trans
   left: -280px; /* مخفية بالكامل خارج الشاشة من اليسار */
   width: 260px;
   height: 100vh;
-  background-color: #ffffff;
+  background-color: #0f172a;
   box-shadow: 4px 0 15px rgba(0, 0, 0, 0.05);
   z-index: 1000;
   transition: left 0.3s ease-in-out;
