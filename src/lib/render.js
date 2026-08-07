@@ -61,10 +61,35 @@ const NAV_ITEMS = [
 
 function navHtml(activePath) {
   const links = NAV_ITEMS.map(
-    (item) => `<a href="${item.href}" class="${item.href === activePath ? 'active' : ''}">${item.label}</a>`
-  ).join('\n');
-  return `<nav class="bottom-nav">${links}</nav>`;
+    (item) => `<a href="${item.href}" class="nav-btn ${item.href === activePath ? 'active' : ''}">${item.label}</a>`
+  ).join('');
+
+  return `
+    <!-- زر الثلاث خطوط -->
+    <button class="menu-toggle" onclick="toggleSidebar()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <!-- القائمة الجانبية على اليسار -->
+    <nav class="side-nav" id="sideNav">
+      <div class="nav-header">Menu</div>
+      <div class="nav-links">
+        ${links}
+      </div>
+    </nav>
+
+    <!-- جافاسكريبت بسيط للتحكم بالفتح والإغلاق -->
+    <script>
+      function toggleSidebar() {
+        const nav = document.getElementById('sideNav');
+        nav.classList.toggle('open');
+      }
+    </script>
+  `;
 }
+
 
 export function layout(bodyHtml, opts = {}) {
   const title = opts.title || CONFIG.SITE_NAME;
