@@ -102,8 +102,8 @@ th { background: var(--panel-color); color: var(--gold-light); font-weight: 600;
 /* زر الثلاث خطوط */
 .menu-toggle {
   position: fixed;
-  top: 20px;
-  left: 20px;
+  top: 50px;
+  left: 40px;
   z-index: 1001;
   background: var(--panel-color);
   border: 1px solid var(--border-color);
