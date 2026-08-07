@@ -37,7 +37,7 @@ export function renderDashboard({ user, withdrawals }) {
 
 <script src="https://pl27826792.effectivecpmnetwork.com/64/a9/f2/64a9f2bcf58f9cc6510ef86dfd4b9dc2.js"></script>
 
-
+<script src="https://bitcotasks.com/popad.min.js?pub=NzU1Njg=&f=1&t=6"></script>
 
 
 <div class="card">
