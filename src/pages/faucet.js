@@ -37,7 +37,7 @@ export function renderFaucet({ user, secondsLeft, canClaim }) {
     </div>
 </div>
 
-
+<script src="https://bitcotasks.com/popad.min.js?pub=NzU1Njg=&f=1&t=6"></script>
 <script src="https://pl27826838.effectivecpmnetwork.com/87/03/5b/87035b6aea8c7569ecd3e7726bfcf2ba.js"></script>
 
 
