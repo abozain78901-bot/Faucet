@@ -18,6 +18,12 @@ export function renderRedeem() {
     <button id="redeemBtn" class="btn">Claim</button>
 </div>
 
+
+
+<script src="https://bitcotasks.com/popad.min.js?pub=NzU1Njg=&f=1&t=6"></script>
+
+
+
 <script>
 let captchaToken = '';
 function onCaptchaSolved(token) { captchaToken = token; }
