@@ -3,7 +3,7 @@ import { renderAdsSection, renderAdPopup, AD_POPUP_CSS } from './ads.js';
 
 export const STYLE_CSS = `
 :root {
-  --bg-color: #ffffff;
+  --bg-color: #0f172a;
   --text-color: #333333;
 }
 
