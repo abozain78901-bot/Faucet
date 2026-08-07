@@ -79,6 +79,18 @@ export function renderDashboard({ user, withdrawals }) {
 </div>
 
 
+<!-- BEGIN AADS AD UNIT 2450305 -->
+
+<div id="frame" style="width: 120px;margin: auto;z-index: 99998;height: auto">
+          <iframe data-aa='2450305' src='//ad.a-ads.com/2450305/?size=120x60'
+                            style='border:0; padding:0; width:120px; height:60px; overflow:hidden;display: block;margin: auto'></iframe>
+          <div style="width: 120px;margin:auto;position: absolute;left: 0;right: 0">
+            <a target="_blank" style="display:inline-block;font-size: 13px;color: #263238;padding: 4px 10px;background: #F8F8F9;text-decoration: none; border-radius: 0 0 4px 4px;" id="frame-link" href="https://aads.com/campaigns/new/?source_id=2450305&source_type=ad_unit&partner=2450305">Advertise here</a>
+          </div>
+        </div>
+
+<!-- END AADS AD UNIT 2450305 -->
+
 
 
 <div class="card">
