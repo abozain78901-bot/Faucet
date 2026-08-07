@@ -165,6 +165,7 @@ const NAV_ITEMS = [
   { href: '/deposit', label: 'Deposit 💳' },
 ];
 
+
 function navHtml(activePath) {
   const links = NAV_ITEMS.map(
     (item) => `<a href="${item.href}" class="nav-btn ${item.href === activePath ? 'active' : ''}">${item.label}</a>`
@@ -180,20 +181,52 @@ function navHtml(activePath) {
 
     <!-- القائمة الجانبية على اليسار -->
     <nav class="side-nav" id="sideNav">
-      <div class="nav-header">Menu</div>
+      <div class="nav-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <span>Menu</span>
+        <!-- زر الشمس/القمر -->
+        <button id="themeToggleBtn" onclick="toggleTheme()" style="background: none; border: none; font-size: 1.2rem; cursor: pointer;">🌙</button>
+      </div>
       <div class="nav-links">
         ${links}
       </div>
     </nav>
 
-    <!-- جافاسكريبت بسيط للتحكم بالفتح والإغلاق -->
+    <!-- جافاسكريبت للتحكم بالقائمة والوضع الليلي -->
     <script>
       function toggleSidebar() {
         const nav = document.getElementById('sideNav');
         nav.classList.toggle('open');
       }
+
+      // تطبيق الوضع المحفوظ عند تحميل الصفحة
+      window.addEventListener('DOMContentLoaded', () => {
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        const btn = document.getElementById('themeToggleBtn');
+        if (savedTheme === 'dark') {
+          document.body.classList.add('dark-mode');
+          if (btn) btn.innerHTML = '☀️';
+        } else {
+          document.body.classList.remove('dark-mode');
+          if (btn) btn.innerHTML = '🌙';
+        }
+      });
     </script>
   `;
+}
+
+function toggleTheme() {
+  const body = document.body;
+  const btn = document.getElementById('themeToggleBtn');
+  
+  body.classList.toggle('dark-mode');
+  
+  if (body.classList.contains('dark-mode')) {
+    btn.innerHTML = '☀️';
+    localStorage.setItem('theme', 'dark');
+  } else {
+    btn.innerHTML = '🌙';
+    localStorage.setItem('theme', 'light');
+  }
 }
 
 
