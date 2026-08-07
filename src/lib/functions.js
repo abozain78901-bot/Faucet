@@ -124,12 +124,12 @@ export async function faucetpaySend(env, toEmail, amountDoge) {
 
 
 
-export async function telegramSendToChannel(text) {
-  if (!CONFIG.TELEGRAM_BOT_TOKEN || CONFIG.TELEGRAM_BOT_TOKEN.startsWith('PUT_YOUR')) {
+export async function telegramSendToChannel(env, text) {
+  if (!env.TELEGRAM_BOT_TOKEN || env.TELEGRAM_BOT_TOKEN.startsWith('PUT_YOUR')) {
     return { ok: false, message: 'Telegram bot token not configured.' };
   }
   try {
-    const res = await fetch(`https://api.telegram.org/bot${CONFIG.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+    const res = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chat_id: CONFIG.TELEGRAM_CHANNEL_ID, text, parse_mode: 'HTML' }),
@@ -151,12 +151,12 @@ export function generateRedeemCode(length) {
 
 
 /** Send a plain-text notification to the configured Telegram chat */
-export async function telegramNotify(text) {
-  if (!CONFIG.TELEGRAM_BOT_TOKEN || CONFIG.TELEGRAM_BOT_TOKEN.startsWith('PUT_YOUR')) {
+export async function telegramNotify(env, text) {
+  if (!env.TELEGRAM_BOT_TOKEN || env.TELEGRAM_BOT_TOKEN.startsWith('PUT_YOUR')) {
     return { ok: false, message: 'Telegram bot token not configured.' };
   }
   try {
-    const res = await fetch(`https://api.telegram.org/bot${CONFIG.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+    const res = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
