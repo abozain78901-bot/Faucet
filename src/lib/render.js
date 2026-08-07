@@ -142,13 +142,13 @@ th { background: #17223c; color: var(--gold-light); font-weight: 600; text-trans
 ${AD_POPUP_CSS}
 `;
 const NAV_ITEMS = [
-  { href: '/dashboard', label: 'Dashboard' },
-  { href: '/faucet', label: 'Faucet' },
-  { href: '/dice', label: 'Dice' },
-  { href: '/bet', label: 'Wager' },
-  { href: '/deposit', label: 'Deposit' },
-  { href: '/ptc', label: 'PTC' }, 
-  { href: '/redeem', label: 'Redeem' }, 
+  { href: '/dashboard', label: 'Dashboard 🏠' },
+  { href: '/faucet', label: 'Faucet 💧' },
+  { href: '/dice', label: 'Dice 🎲' },
+  { href: '/bet', label: 'Wager 🎰' },
+  { href: '/ptc', label: 'PTC ​🖱️' }, 
+  { href: '/redeem', label: 'Redeem 🎁' },
+  { href: '/deposit', label: 'Deposit 💳' },
 ];
 
 function navHtml(activePath) {
