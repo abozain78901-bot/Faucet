@@ -8,7 +8,6 @@ export const AD_SLOTS = [
   { id: 1, html: `<script>atOptions={key:'bbf7f1ed0a5353b4b9209b1e8bb6ab5a',format:'iframe',height:50,width:320,params:{}};</script><script src="https://www.highperformanceformat.com/bbf7f1ed0a5353b4b9209b1e8bb6ab5a/invoke.js"></script>` },
   { id: 2, html: `<script>atOptions={key:'bbf7f1ed0a5353b4b9209b1e8bb6ab5a',format:'iframe',height:50,width:320,params:{}};</script><script src="https://www.highperformanceformat.com/bbf7f1ed0a5353b4b9209b1e8bb6ab5a/invoke.js"></script>` },
   { id: 3, html: `<script src="https://pl27826792.effectivecpmnetwork.com/64/a9/f2/64a9f2bcf58f9cc6510ef86dfd4b9dc2.js"></script>` },
-  { id: 4, html: `<script async="async" data-cfasync="false" src="https://pl27850433.effectivecpmnetwork.com/f078c83005d88bd6d5ca59bed3accc42/invoke.js"></script><div id="container-f078c83005d88bd6d5ca59bed3accc42"></div>` },
   { id: 5, html: `<script src="https://pl27826838.effectivecpmnetwork.com/87/03/5b/87035b6aea8c7569ecd3e7726bfcf2ba.js"></script>` },
   { id: 6, html: `<script>atOptions={key:'4c1c05cc3769478251a0e23cc9f6989f',format:'iframe',height:300,width:160,params:{}};</script><script src="https://www.highperformanceformat.com/4c1c05cc3769478251a0e23cc9f6989f/invoke.js"></script>` },
   { id: 7, html: `<script>atOptions={key:'62dd2833ffddeabe6909f16df83f3d25',format:'iframe',height:60,width:468,params:{}};</script><script src="https://www.highperformanceformat.com/62dd2833ffddeabe6909f16df83f3d25/invoke.js"></script>` },
