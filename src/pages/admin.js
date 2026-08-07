@@ -37,7 +37,13 @@ h1 { color: #e6c976; }
 </style></head>
 <body>
 <h1>Pending Deposit Reviews</h1>
+
+<form method="post" action="/admin/redeem/send" style="margin-bottom:20px;">
+  <button type="submit" style="background:#e6c976;color:#10182b;border:none;padding:10px 16px;border-radius:4px;font-weight:700;cursor:pointer;">🎁 Send Redeem Code Now</button>
+</form>
+
 <table>
+
 <tr><th>ID</th><th>Email</th><th>Amount</th><th>Tx Hash</th><th>Sender Wallet</th><th>Address Shown</th><th>Submitted</th><th>Action</th></tr>
 ${rows}
 </table>
