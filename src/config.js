@@ -100,4 +100,11 @@ export const CONFIG = {
   // ---- Ad placement (Adsterra network) ----
   ADS_PER_PAGE: 3,
   ADS_PER_PTC_PAGE: 7,
+  // ---- Redeem codes (posted daily to Telegram channel) ----
+  REDEEM_ENABLED: true,
+  REDEEM_REWARD_AMOUNT: 0.01,
+  REDEEM_MAX_USES: 50,
+  REDEEM_VALID_HOURS: 24,
+  REDEEM_CODE_LENGTH: 8,
+  TELEGRAM_CHANNEL_ID: '@faucet_dog',
 };
