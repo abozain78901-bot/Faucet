@@ -11,6 +11,9 @@ database_id = "e7ce610a-aede-4b23-a4db-9e354f67758b"
 directory = "./src"
 binding = "ASSETS"
 
+[triggers]
+crons = ["0 0 * * *"]
+
 # Secrets — set with `wrangler secret put NAME`, never write real values here:
 #   FAUCETPAY_API_KEY     (payout API key from faucetpay.io)
 #   TURNSTILE_SECRET_KEY  (Cloudflare Turnstile secret, if CAPTCHA_ENABLED)
