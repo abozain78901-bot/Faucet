@@ -3,11 +3,25 @@ import { renderAdsSection, renderAdPopup, AD_POPUP_CSS } from './ads.js';
 
 export const STYLE_CSS = `
 :root {
-    --bg: #0a0e1a; --panel: #10182b; --border: #223052;
-    --gold: #c9a24b; --gold-light: #e6c976; --blue: #4a7dc9;
-    --green: #3fae6a; --red: #c14b4b;
-    --text: #e8ecf5; --muted: #8b96b0;
+  --bg-color: #ffffff;
+  --text-color: #333333;
 }
+
+body.dark-mode {
+  --bg-color: #0f172a;
+  --text-color: #ffffff;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.side-nav {
+  background-color: var(--bg-color);
+}
+ 
 * { box-sizing: border-box; }
 body { background: var(--bg); color: var(--text); font-family: Georgia, 'Times New Roman', serif; margin: 0; padding-bottom: 90px; }
 .wrap { max-width: 480px; margin: 0 auto; padding: 24px 18px; }
