@@ -98,9 +98,15 @@ export default {
             .bind('rejected', nowUTC(), depositId, 'pending').run();
           return redirect('/admin');
         }
+if (path === '/admin/redeem/send' && method === 'POST') {
+          await postDailyRedeemCode(env);
+          return redirect('/admin');
+        }
 
+        return new Response('Not found', { status: 404 });
+      }
 
-        // ---- Redeem code ----
+      // ---- Redeem code ----
       if (path === '/redeem' && method === 'GET') {
         return htmlResponse(renderRedeem());
       }
@@ -144,11 +150,7 @@ export default {
         return jsonResponse({ ok: true, amount: fmtDoge(redeemCode.reward_amount) });
       }
 
-
-        
-        return new Response('Not found', { status: 404 });
-      }
-
+      return new Response('Not found', { status: 404 });
       // ---- Public routes ----
       if (path === '/') {
         const user = await currentUser(request, env);
@@ -498,16 +500,20 @@ export default {
 
   async scheduled(event, env, ctx) {
     if (!CONFIG.REDEEM_ENABLED) return;
-    const code = generateRedeemCode(CONFIG.REDEEM_CODE_LENGTH);
-    const now = new Date();
-    const expiresAt = new Date(now.getTime() + CONFIG.REDEEM_VALID_HOURS * 3600 * 1000);
-
-    await env.DB.prepare(
-      'INSERT INTO redeem_codes (code, reward_amount, max_uses, used_count, expires_at, created_at) VALUES (?, ?, ?, 0, ?, ?)'
-    ).bind(code, CONFIG.REDEEM_REWARD_AMOUNT, CONFIG.REDEEM_MAX_USES, expiresAt.toISOString(), now.toISOString()).run();
-
-    await telegramSendToChannel(
-      `🎁 <b>Daily Redeem Code!</b>\n\nCode: <code>${code}</code>\n\nReward: ${CONFIG.REDEEM_REWARD_AMOUNT} ${CONFIG.FAUCETPAY_CURRENCY}\nValid for: first ${CONFIG.REDEEM_MAX_USES} people, ${CONFIG.REDEEM_VALID_HOURS}h\n\nRedeem here: ${CONFIG.SITE_URL}/redeem`
-    );
+    await postDailyRedeemCode(env);
   },
-}; 
+};
+
+async function postDailyRedeemCode(env) {
+  const code = generateRedeemCode(CONFIG.REDEEM_CODE_LENGTH);
+  const now = new Date();
+  const expiresAt = new Date(now.getTime() + CONFIG.REDEEM_VALID_HOURS * 3600 * 1000);
+
+  await env.DB.prepare(
+    'INSERT INTO redeem_codes (code, reward_amount, max_uses, used_count, expires_at, created_at) VALUES (?, ?, ?, 0, ?, ?)'
+  ).bind(code, CONFIG.REDEEM_REWARD_AMOUNT, CONFIG.REDEEM_MAX_USES, expiresAt.toISOString(), now.toISOString()).run();
+
+  return telegramSendToChannel(
+    `🎁 <b>Daily Redeem Code!</b>\n\nCode: <code>${code}</code>\n\nReward: ${CONFIG.REDEEM_REWARD_AMOUNT} ${CONFIG.FAUCETPAY_CURRENCY}\nValid for: first ${CONFIG.REDEEM_MAX_USES} people, ${CONFIG.REDEEM_VALID_HOURS}h\n\nRedeem here: ${CONFIG.SITE_URL}/redeem`
+  );
+}
