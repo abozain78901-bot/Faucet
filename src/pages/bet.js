@@ -18,8 +18,17 @@ export function renderBet({ user }) {
 
 
 
-<script async="async" data-cfasync="false" src="https://pl27850433.effectivecpmnetwork.com/f078c83005d88bd6d5ca59bed3accc42/invoke.js"></script>
-<div id="container-f078c83005d88bd6d5ca59bed3accc42"></div>
+<script>
+  atOptions = {
+    'key' : '2069ca0b4b7f43c398a4b51f7559c006',
+    'format' : 'iframe',
+    'height' : 600,
+    'width' : 160,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/2069ca0b4b7f43c398a4b51f7559c006/invoke.js"></script>
+
 
 
 <div class="card">
