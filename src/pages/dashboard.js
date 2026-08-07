@@ -58,8 +58,7 @@ export function renderDashboard({ user, withdrawals }) {
 </div>
 
 
-<script async="async" data-cfasync="false" src="https://pl27850433.effectivecpmnetwork.com/f078c83005d88bd6d5ca59bed3accc42/invoke.js"></script>
-<div id="container-f078c83005d88bd6d5ca59bed3accc42"></div>
+
 
 
 <script src="https://pl27826838.effectivecpmnetwork.com/87/03/5b/87035b6aea8c7569ecd3e7726bfcf2ba.js"></script>
