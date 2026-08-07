@@ -55,7 +55,8 @@ const NAV_ITEMS = [
   { href: '/dice', label: 'Dice' },
   { href: '/bet', label: 'Wager' },
   { href: '/deposit', label: 'Deposit' },
-  { href: '/ptc', label: 'PTC' }
+  { href: '/ptc', label: 'PTC' }, 
+  { href: '/redeem', label: 'Redeem' }, 
 ];
 
 function navHtml(activePath) {
