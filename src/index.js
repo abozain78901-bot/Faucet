@@ -5,6 +5,7 @@ import { renderHome } from './pages/home.js';
 import { getPermanentDepositAddress, verifyWebhookSignature } from './lib/ccpayment.js';
 import { CONFIG } from './config.js';
 import { STYLE_CSS } from './lib/render.js';
+import { ROUTER_JS } from './lib/router.js';
 import {
   jsonResponse, htmlResponse, redirect, isValidEmail,
   parseFormBody, fmtDoge, nowUTC, secondsSince,
@@ -36,9 +37,17 @@ export default {
     const method = request.method;
 
     try {
-      // ---- Static asset ----
+      // ---- Static assets ----
       if (path === '/assets/style.css') {
         return new Response(STYLE_CSS, { headers: { 'Content-Type': 'text/css; charset=utf-8' } });
+      }
+      if (path === '/assets/app.js') {
+        return new Response(ROUTER_JS, {
+          headers: {
+            'Content-Type': 'application/javascript; charset=utf-8',
+            'Cache-Control': 'public, max-age=3600',
+          },
+        });
       }
 
       // ---- Maintenance mode ----
